@@ -11,14 +11,11 @@ st.title("📊 Statistische Auswertung & Analyse")
 st.markdown("Lade deine Excel-Datei hoch, um die Analyse für **Chargen** oder **PK** zu starten.")
 
 # --- 1. Datei Upload & Input ---
-col1, col2 = st.columns(2)
-
-with col1:
-    uploaded_file = st.file_uploader("Excel Datei wählen (.xlsx)", type="xlsx")
-
-with col2:
-    # Ersetzt: auswahl = input()
-    auswahl = st.radio("Welches Set soll analysiert werden?", ("Chargen", "PK"))
+with st.sidebar:
+    st.header("Einstellungen")
+    uploaded_file = st.file_uploader("Excel Datei hochladen", type="xlsx")
+    st.divider()
+    auswahl = st.radio("Welches Set analysieren?", ("Chargen", "PK"))
 
 # --- 2. Daten laden ---
 if uploaded_file is not None:
@@ -145,3 +142,4 @@ if uploaded_file is not None:
 
 else:
     st.info("Bitte lade eine Excel-Datei hoch, um zu beginnen.")
+
