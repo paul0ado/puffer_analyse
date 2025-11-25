@@ -174,9 +174,9 @@ if uploaded_file is not None:
             st.write(f"F-Prüfgröße: `{f_pruf:.3f}`")
             st.write(f"F-Kritisch: `{f_krit:.3f}`")
             if "verworfen" in h0_text:
-                st.error(h0_text)
-            else:
                 st.success(h0_text)
+            else:
+                st.error(h0_text)
 
         # --- PLOT ---
         st.subheader("Streudiagramm")
@@ -191,7 +191,7 @@ if uploaded_file is not None:
             np.min([ax.get_xlim(), ax.get_ylim()]),  # min of both axes
             np.max([ax.get_xlim(), ax.get_ylim()]),  # max of both axes
         ]
-        ax.plot(lims, lims, 'r--', alpha=0.75, label='Ideallinie (x=y)')
+        ax.plot(lims, lims, ls = "-", color = "gray", alpha=0.75, label='Ideallinie (x=y)')
         
         ax.set_xlabel("Gerät A")
         ax.set_ylabel(f"Gerät {vergleich_geraet}")
