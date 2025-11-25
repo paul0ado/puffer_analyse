@@ -179,11 +179,11 @@ if uploaded_file is not None:
                 st.error(h0_text)
 
         # --- PLOT ---
-        st.subheader("Streudiagramm")
-        fig, ax = plt.subplots(figsize=(8, 6))
+        st.subheader("Visualisierung")
+        fig, ax = plt.subplots(1, 2, figsize=(14, 6))
         
         # Scatter Plot
-        ax.scatter(x, y, alpha=0.7, label='Messwerte')
+        ax[0].scatter(x, y, alpha=0.7, label='Messwerte')
         
         # Ideallinie (y=x)
         # Wir nehmen min/max von beiden Achsen für eine schöne Diagonale
@@ -191,14 +191,36 @@ if uploaded_file is not None:
             np.min([ax.get_xlim(), ax.get_ylim()]),  # min of both axes
             np.max([ax.get_xlim(), ax.get_ylim()]),  # max of both axes
         ]
-        ax.plot(lims, lims, ls = "-", color = "gray", alpha=0.75, label=f'Ideallinie; Lin CCC: {linCCC(x, y):.4f}')
+        ax[0].plot(lims, lims, ls = "-", color = "gray", alpha=0.75, label=f'Ideallinie; Lin CCC: {linCCC(x, y):.4f}')
         
-        ax.set_xlabel("Gerät A")
-        ax.set_ylabel(f"Gerät {vergleich_geraet}")
-        ax.set_title(f"Vergleich A vs {vergleich_geraet} ({auswahl_einheit})")
-        ax.legend()
-        ax.grid(True, linestyle='--', alpha=0.5)
+        ax[0].set_xlabel("Gerät A")
+        ax[0].set_ylabel(f"Gerät {vergleich_geraet}")
+        ax[0].set_title(f"Vergleich A vs {vergleich_geraet} ({auswahl_einheit})")
+        ax[0].legend()
+        ax[0].grid(True, linestyle='--', alpha=0.5)
+
+        mittelwerte = (x + y) / 2
+        diff = x - y
+        mean_diff = np.mean(diff)
+        std_diff = np.std(diff, ddof=1)
+
+        loa_upper = mean_diff + 1.96 * std_diff
+        loa_lower = mean_diff - 1.96 * std_diff
+
+        ax[1].scatter(mittelwerte, diff, color='black', alpha=0.6)
+        ax[1].axhline(mean_diff, color='red', alpha = 0.5, linestyle='-', lw=1.5, label=f'Bias: {mean_diff:.2f}')
+        ax[1].axhline(loa_upper, color='gray', linestyle='--', lw=1.5, label=f'+1.96 SD: {loa_upper:.2f}')
+        ax[1].axhline(loa_lower, color='gray', linestyle='--', lw=1.5, label=f'-1.96 SD: {loa_lower:.2f}')
         
+        ax[1].set_title("Bland-Altman Plot", fontsize = 11)
+        ax[1].set_ylabel(f"Differenz (A - {vergleich_geraet})")
+        ax[1].set_xlabel("Mittelwert")
+        ax[1].grid(True, linestyle=':', alpha=0.5, zorder=1)
+        # Legende angepasst, damit sie nicht den Plot überdeckt
+        ax[1].legend(loc='upper right', fontsize=8, framealpha=0.9)
+
+        # Layout straffen und Plot anzeigen
+        plt.tight_layout()
         st.pyplot(fig)
         
         # Optional: Daten anzeigen
