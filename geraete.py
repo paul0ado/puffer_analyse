@@ -191,7 +191,7 @@ if uploaded_file is not None:
             np.min([ax.get_xlim(), ax.get_ylim()]),  # min of both axes
             np.max([ax.get_xlim(), ax.get_ylim()]),  # max of both axes
         ]
-        ax.plot(lims, lims, ls = "-", color = "gray", alpha=0.75, label=f'Ideallinie; Lin CCC: {linCCC(x, y)}')
+        ax.plot(lims, lims, ls = "-", color = "gray", alpha=0.75, label=f'Ideallinie; Lin CCC: {linCCC(x, y):.4f}')
         
         ax.set_xlabel("Gerät A")
         ax.set_ylabel(f"Gerät {vergleich_geraet}")
